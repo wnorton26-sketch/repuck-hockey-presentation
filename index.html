@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Repuck Hockey — Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ice: #e8f4fc;
+      --deep: #0a1628;
+      --slate: #1c2d44;
+      --accent: #c41e3a;
+      --accent-soft: #ff4d6d;
+      --gold: #f4b942;
+      --muted: #8ba3bc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: "Source Sans 3", system-ui, sans-serif;
+      background: var(--deep);
+      color: var(--ice);
+    }
+
+    .deck {
+      height: 100%;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: clamp(1.5rem, 5vw, 4rem);
+      text-align: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(12px);
+      transition: opacity 0.55s ease, transform 0.55s ease, visibility 0.55s;
+      background: radial-gradient(ellipse 120% 80% at 50% 0%, #1a3352 0%, var(--deep) 55%);
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 255, 255, 0.02) 2px,
+        rgba(255, 255, 255, 0.02) 4px
+      );
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      z-index: 1;
+    }
+
+    .slide-inner {
+      max-width: 52rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-mark {
+      width: clamp(5rem, 14vw, 6.5rem);
+      height: clamp(5rem, 14vw, 6.5rem);
+      margin: 0 auto 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 6px 28px rgba(0, 0, 0, 0.45));
+    }
+
+    .logo-mark svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    h1 {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(3.5rem, 12vw, 7.5rem);
+      letter-spacing: 0.02em;
+      line-height: 0.95;
+      font-weight: 400;
+      color: var(--ice);
+      text-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 span {
+      color: var(--accent-soft);
+    }
+
+    .tagline {
+      font-size: clamp(1.1rem, 2.8vw, 1.45rem);
+      color: var(--muted);
+      margin-top: 1rem;
+      font-weight: 400;
+      max-width: 28em;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    h2 {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      letter-spacing: 0.04em;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+
+    .body-text {
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      line-height: 1.65;
+      color: var(--ice);
+      max-width: 38em;
+      margin: 0 auto;
+    }
+
+    .body-text strong {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .stat {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      min-width: 10rem;
+    }
+
+    .stat b {
+      display: block;
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 1.75rem;
+      color: var(--accent-soft);
+      font-weight: 400;
+    }
+
+    .stat span {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .process {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+      text-align: left;
+      max-width: 40rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .step {
+      background: var(--slate);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      border-left: 4px solid var(--accent);
+    }
+
+    .step em {
+      display: block;
+      font-style: normal;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 0.35rem;
+    }
+
+    .goal-box {
+      margin-top: 2rem;
+      padding: 1.5rem 1.75rem;
+      background: linear-gradient(135deg, rgba(196, 30, 58, 0.2) 0%, rgba(26, 51, 82, 0.5) 100%);
+      border-radius: 16px;
+      border: 1px solid rgba(244, 185, 66, 0.35);
+    }
+
+    .goal-box p {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .slide-kicker {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .slide-inner--dense {
+      max-width: 56rem;
+      max-height: 82vh;
+      overflow-y: auto;
+      text-align: left;
+      padding-right: 0.25rem;
+    }
+
+    .slide-inner--dense h2 {
+      text-align: center;
+    }
+
+    .slide-inner--dense .slide-kicker {
+      text-align: center;
+    }
+
+    ul.plain {
+      list-style: none;
+      margin-top: 1rem;
+      font-size: clamp(0.98rem, 2.1vw, 1.15rem);
+      line-height: 1.55;
+      color: var(--ice);
+    }
+
+    ul.plain li {
+      position: relative;
+      padding-left: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    ul.plain li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+    }
+
+    .mission-quote {
+      font-size: clamp(1.05rem, 2.3vw, 1.3rem);
+      line-height: 1.7;
+      font-style: italic;
+      color: #fff;
+      border-left: 4px solid var(--gold);
+      padding: 1rem 1.25rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0 12px 12px 0;
+      margin-top: 0.5rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 1.5rem;
+      margin-top: 1.25rem;
+    }
+
+    @media (max-width: 720px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1rem 1.15rem;
+    }
+
+    .panel h3 {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.06em;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .panel p,
+    .panel li {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .panel p strong,
+    .panel li strong {
+      color: var(--ice);
+    }
+
+    table.figures {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: clamp(0.88rem, 1.8vw, 1rem);
+    }
+
+    table.figures th,
+    table.figures td {
+      padding: 0.45rem 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: left;
+    }
+
+    table.figures th {
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    table.figures td:not(:first-child) {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      color: var(--ice);
+    }
+
+    table.figures--launch {
+      max-width: 26rem;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    table.figures--launch th,
+    table.figures--launch td {
+      padding: 0.6rem 0.85rem;
+    }
+
+    table.figures--launch thead th:last-child,
+    table.figures--launch tbody td:last-child {
+      text-align: right;
+    }
+
+    table.figures--launch tr.figures-total th,
+    table.figures--launch tr.figures-total td {
+      border-bottom: none;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    table.figures--launch tr.figures-total td strong {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 1.35rem;
+      font-weight: 400;
+    }
+
+    .disclaimer {
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .margin-period-label {
+      margin: 1.25rem auto 0.5rem;
+      font-size: 1rem;
+      color: var(--gold);
+    }
+
+    nav.controls {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem 1.25rem;
+      background: linear-gradient(transparent, rgba(10, 22, 40, 0.95));
+    }
+
+    .dots {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      flex: 1;
+      max-width: min(58vw, 36rem);
+      overflow-x: auto;
+      padding-bottom: 0.2rem;
+    }
+
+    .dots button {
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .dots button:hover {
+      transform: scale(1.15);
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .dots button[aria-current="true"] {
+      background: var(--accent-soft);
+      transform: scale(1.2);
+    }
+
+    .arrows {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .arrows button {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--ice);
+      cursor: pointer;
+      font-size: 1.25rem;
+      line-height: 1;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .arrows button:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--gold);
+    }
+
+    .arrows button:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .hint {
+      position: fixed;
+      top: 1rem;
+      right: 1.25rem;
+      z-index: 10;
+      font-size: 0.8rem;
+      color: var(--muted);
+      opacity: 0.85;
+    }
+
+    @media (max-width: 520px) {
+      .hint {
+        display: none;
+      }
+    }
+
+    /* Developer / inline edit mode */
+    body.edit-mode {
+      --edit-bar-h: 3rem;
+    }
+
+    body.edit-mode .hint {
+      top: calc(1rem + var(--edit-bar-h));
+    }
+
+    .edit-toolbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 0.75rem;
+      padding: 0.5rem 1rem;
+      min-height: var(--edit-bar-h, 3rem);
+      background: linear-gradient(135deg, #2a1f08 0%, #1a1408 100%);
+      border-bottom: 2px solid var(--gold);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+      font-size: 0.85rem;
+      color: var(--ice);
+    }
+
+    .edit-toolbar[hidden] {
+      display: none !important;
+    }
+
+    .edit-toolbar__label {
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+      margin-right: 0.25rem;
+    }
+
+    .edit-toolbar button {
+      font-family: inherit;
+      font-size: 0.8rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--ice);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .edit-toolbar button:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: var(--gold);
+    }
+
+    .edit-toolbar button.primary {
+      background: rgba(244, 185, 66, 0.25);
+      border-color: var(--gold);
+      color: #fff;
+    }
+
+    .edit-toolbar__hint {
+      flex: 1 1 100%;
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    @media (min-width: 720px) {
+      .edit-toolbar__hint {
+        flex: 1 1 auto;
+      }
+    }
+
+    body.edit-mode .slide-inner[contenteditable="true"] {
+      outline: 2px dashed rgba(244, 185, 66, 0.55);
+      outline-offset: 6px;
+      border-radius: 4px;
+      cursor: text;
+    }
+
+    body.edit-mode .slide-inner [contenteditable="false"] {
+      outline: none;
+      cursor: default;
+    }
+
+    .edit-enter-btn {
+      position: fixed;
+      left: 1.25rem;
+      top: 1rem;
+      z-index: 10;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid rgba(244, 185, 66, 0.45);
+      background: rgba(26, 51, 82, 0.92);
+      color: var(--gold);
+      cursor: pointer;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .edit-enter-btn:hover {
+      background: rgba(244, 185, 66, 0.18);
+      border-color: var(--gold);
+      color: #fff;
+    }
+
+    body.edit-mode .edit-enter-btn {
+      display: none;
+    }
+
+    @media (max-width: 520px) {
+      .edit-enter-btn {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.65rem;
+        left: 0.75rem;
+        top: 0.65rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="edit-toolbar" class="edit-toolbar" hidden>
+    <span class="edit-toolbar__label">Edit mode</span>
+    <button type="button" id="edit-toggle-url" class="primary" title="Copy link that opens in edit mode">Copy ?edit=1 link</button>
+    <button type="button" id="edit-save" class="primary" title="Saves edits for refresh and Live Server">Save</button>
+    <button type="button" id="edit-link-file" title="One-time: pick presentation-edits.json in this folder">Link save file</button>
+    <button type="button" id="edit-copy-slide" title="HTML for the current slide only">Copy this slide HTML</button>
+    <button type="button" id="edit-download" title="Saves the whole page as you see it now">Download full HTML</button>
+    <button type="button" id="edit-exit">Exit edit mode (Esc)</button>
+    <span class="edit-toolbar__hint">Edits auto-save. For Live Server: click Link save file once and choose <strong>presentation-edits.json</strong> in this folder — then Save writes there so refresh keeps your work.</span>
+  </div>
+
+  <button type="button" class="edit-enter-btn" id="edit-enter" aria-label="Enter slide edit mode">Edit slides</button>
+
+  <p class="hint" id="nav-hint">← → or Space to advance · <kbd style="opacity:0.85;font-size:0.75em">⌘/Ctrl</kbd>+<kbd style="opacity:0.85;font-size:0.75em">⇧</kbd>+<kbd style="opacity:0.85;font-size:0.75em">E</kbd> edit</p>
+
+  <div class="deck" id="deck" role="region" aria-label="Repuck Hockey presentation">
+    <section class="slide active" aria-hidden="false">
+      <div class="slide-inner">
+        <div class="logo-mark" role="img" aria-label="Repuck Hockey logo">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="rp-puck" x1="30" y1="28" x2="90" y2="92" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#3d3d3d"/>
+                <stop offset="0.45" stop-color="#1a1a1a"/>
+                <stop offset="1" stop-color="#0a0a0a"/>
+              </linearGradient>
+              <linearGradient id="rp-ring" x1="20" y1="20" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#ff4d6d"/>
+                <stop offset="1" stop-color="#c41e3a"/>
+              </linearGradient>
+              <linearGradient id="rp-gold" x1="40" y1="50" x2="80" y2="70" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#ffd87a"/>
+                <stop offset="1" stop-color="#f4b942"/>
+              </linearGradient>
+              <radialGradient id="rp-shine" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(42 38) rotate(45) scale(50)">
+                <stop offset="0" stop-color="#fff" stop-opacity="0.22"/>
+                <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <path d="M88 28c14 8 18 26 12 40" stroke="url(#rp-gold)" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.9"/>
+            <path d="M22 52c-2-18 14-34 34-36" stroke="url(#rp-ring)" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M28 24 L38 18 L42 32 L32 38 Z" fill="url(#rp-gold)" opacity="0.85"/>
+            <path d="M32 38 L48 44 L44 56 L28 50 Z" fill="#8ba3bc" opacity="0.5"/>
+            <circle cx="60" cy="60" r="52" stroke="url(#rp-ring)" stroke-width="4" fill="none" opacity="0.35"/>
+            <ellipse cx="60" cy="62" rx="38" ry="34" fill="url(#rp-puck)" stroke="#2a2a2a" stroke-width="1.5"/>
+            <ellipse cx="60" cy="58" rx="38" ry="12" fill="url(#rp-shine)"/>
+            <path d="M28 58c8-6 20-9 32-9s24 3 32 9" stroke="url(#rp-gold)" stroke-width="2.2" stroke-linecap="round" opacity="0.95"/>
+            <path d="M30 66c10-5 22-7 30-7s20 2 30 7" stroke="url(#rp-gold)" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+            <path d="M32 74c12-4 18-5 28-5s16 1 28 5" stroke="url(#rp-gold)" stroke-width="1.8" stroke-linecap="round" opacity="0.55"/>
+            <text x="60" y="68" text-anchor="middle" font-family="'Bebas Neue', sans-serif" font-size="34" fill="#e8f4fc" opacity="0.95">R</text>
+            <circle cx="82" cy="38" r="2.5" fill="#e8f4fc" opacity="0.7"/>
+            <circle cx="76" cy="32" r="1.2" fill="#e8f4fc" opacity="0.45"/>
+          </svg>
+        </div>
+        <h1>Re<span>puck</span> Hockey</h1>
+        <p class="tagline">Broken sticks, too many pucks wasted — and a better way to play on the street.</p>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner slide-inner--dense">
+        <p class="slide-kicker">Product &amp; opportunity</p>
+        <h2>What we sell — and why it can work</h2>
+        <p class="body-text">
+          <strong>Repuck Hockey</strong> is a consumer and team-focused product line: <strong>street hockey pucks</strong> made by grinding broken composite sticks, blending the fiber with recycled plastic, and injection-molding a puck tuned for <strong>driveway and rink-adjacent concrete</strong>. We also sell the <strong>story</strong> — verifiable recycled content and local collection partnerships.
+        </p>
+        <p class="body-text" style="margin-top: 0.85rem">
+          We see a <strong>viable market</strong> because (1) hockey households already buy pucks and balls repeatedly, (2) sustainability narratives move product in youth sports, and (3) rinks and associations need a constructive answer to “what do we do with snapped sticks?” beyond the dumpster.
+        </p>
+        <div class="stat-row">
+          <div class="stat"><b>~520k</b><span>USA Hockey youth players (illustr.)</span></div>
+          <div class="stat"><b>$380</b><span>Avg. composite stick (club tier)</span></div>
+          <div class="stat"><b>2 markets</b><span>Families + rink/team bulk</span></div>
+        </div>
+        <p class="disclaimer">Player counts and spend are rounded illustrative figures for a classroom pitch, not audited statistics.</p>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner">
+        <p class="slide-kicker">Mission</p>
+        <h2>Why we exist</h2>
+        <blockquote class="mission-quote">
+          Repuck Hockey keeps broken composite sticks out of landfills by turning them into durable, affordable street hockey pucks — so more kids can keep playing and families waste less money on gear that still has life left in the material.
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner">
+        <h2>The problem</h2>
+        <p class="body-text">
+          Hockey is a <strong>very expensive sport</strong>, and that cost keeps many families on the sidelines. Gear adds up fast — and one of the biggest pain points is equipment that fails before its time.
+        </p>
+        <div class="stat-row">
+          <div class="stat"><b>$350–400</b><span>Typical high-end stick price</span></div>
+          <div class="stat"><b>Too often</b><span>Sticks break anyway</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner">
+        <h2>Waste worth fixing</h2>
+        <p class="body-text">
+          Expensive sticks <strong>break more than they should</strong> for what families pay. When they snap, the usual answer is the trash — but that carbon fiber and composite material still has life in it.
+        </p>
+        <p class="body-text" style="margin-top: 1rem">
+          <strong>Repuck</strong> asks: what if those broken sticks were <strong>recycled and reused</strong> instead of thrown away?
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner">
+        <h2>How it works</h2>
+        <p class="body-text" style="margin-bottom: 1.25rem">
+          Partner with <strong>construction and recycling groups</strong> to collect broken sticks, process them safely, and give the material a second life.
+        </p>
+        <div class="process">
+          <div class="step"><em>Step 1</em> Collect broken sticks</div>
+          <div class="step"><em>Step 2</em> Grind into usable fiber / particles</div>
+          <div class="step"><em>Step 3</em> Blend with plastic</div>
+          <div class="step"><em>Step 4</em> Mold into street hockey pucks</div>
+        </div>
+        <p class="body-text" style="margin-top: 1.5rem">
+          The mix is tuned so pucks <strong>slide smoothly on concrete</strong> — built for driveway and pavement games, not the landfill.
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner slide-inner--dense">
+        <p class="slide-kicker">Disruption</p>
+        <h2>Are we “disruptive”?</h2>
+        <p class="body-text">
+          We are <strong>not</strong> trying to replace elite on-ice puck suppliers overnight. We <strong>are</strong> disruptive to the <strong>default story</strong> of street hockey gear: cheap virgin plastic, zero provenance, no link to the hockey ecosystem’s waste stream.
+        </p>
+        <ul class="plain">
+          <li><strong>Supply-side twist:</strong> feedstock from broken sticks lowers disposal pain for rinks and creates a differentiated raw-material narrative.</li>
+          <li><strong>Category expansion:</strong> “circular” performance pucks sit between commodity street pucks and premium training aids on shelf talkers and DTC landing pages.</li>
+          <li><strong>Risk:</strong> incumbents can copy the idea if recycling at scale is proven — first-mover advantage is <strong>collection network + brand trust</strong>, not the mold alone.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner slide-inner--dense">
+        <p class="slide-kicker">Market research</p>
+        <h2>Street hockey &amp; training accessories (U.S.)</h2>
+        <p class="body-text" style="text-align: center">
+          For this pitch we model a <strong>broader “roller / street hockey hard goods”</strong> slice (pucks, balls, lightweight goals) at roughly <strong>$58M</strong> annual U.S. retail (illustrative TAM). Our <strong>year-one serviceable segment</strong> for recycled-content hard pucks and team packs is modeled at <strong>~$9M</strong>, with a <strong>first-year capture goal under 0.7%</strong> of that slice.
+        </p>
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Leaders &amp; strengths</h3>
+            <ul class="plain">
+              <li><strong>Franklin Sports</strong> — mass retail distribution, price leadership, licensed looks.</li>
+              <li><strong>Bauer / CCM (adjacent)</strong> — brand trust from ice; cross-sell training items.</li>
+              <li><strong>Mylec</strong> — street/roller heritage, team bulk familiarity.</li>
+              <li><strong>Green Biscuit &amp; others</strong> — premium training story, loyal niche.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>How we differentiate</h3>
+            <ul class="plain">
+              <li><strong>Verified recycled stick fiber %</strong> on-pack + batch QR traceability (goal).</li>
+              <li><strong>Rink collection</strong> — bins, league co-marketing, “bring a broken stick” drives.</li>
+              <li><strong>Concrete-first glide</strong> — formulation notes for outdoor play, not just logo swaps.</li>
+              <li><strong>Team pricing</strong> — 24- and 96-packs priced to win club orders vs. commodity imports.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="disclaimer">TAM/SAM figures are fictional but sized to feel plausible for a student venture plan; replace with cited industry reports for a graded submission.</p>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner slide-inner--dense">
+        <p class="slide-kicker">Go-to-market</p>
+        <h2>How we acquire customers</h2>
+        <ul class="plain">
+          <li><strong>DTC Shopify</strong> — starter 2-packs and 3-packs; geo-targeted ads in hockey-dense ZIP codes.</li>
+          <li><strong>Rink &amp; association pilots</strong> — co-branded collection bins; coupon on-pack for first online repurchase.</li>
+          <li><strong>Tournament &amp; tryout season</strong> — booth + “trade your busted stick” for a discount code.</li>
+          <li><strong>Creator / coach micro-influencers</strong> — paid product seeding (~25 creators in launch states).</li>
+          <li><strong>Amazon storefront</strong> — after 90 days of QC data (reviews matter for commodity adjacency).</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner slide-inner--dense">
+        <p class="slide-kicker">Retention</p>
+        <h2>How we keep customers</h2>
+        <ul class="plain">
+          <li><strong>Subscribe &amp; save light</strong> — “season pack” every 4 months for driveway programs (optional skip).</li>
+          <li><strong>League loyalty pricing</strong> — volume tiers for coaches who reorder each season.</li>
+          <li><strong>Take-back</strong> — return worn Repucks (mailer label) for <strong>15% off</strong> next order; material goes back into lower-spec batches.</li>
+          <li><strong>Email drills + local events</strong> — not spam: one useful drill video per month during outdoor season.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner">
+        <p class="slide-kicker">Startup capital</p>
+        <h2>Upfront costs &amp; fundraising</h2>
+        <table class="figures figures--launch" aria-label="Estimated startup costs">
+          <thead>
+            <tr><th scope="col">Item</th><th scope="col">Amount</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Workspace &amp; setup (6 mo.)</td><td>$8,500</td></tr>
+            <tr><td>Stick shredding &amp; prep</td><td>$12,000</td></tr>
+            <tr><td>Contract production + mold</td><td>$26,000</td></tr>
+            <tr><td>Materials, packaging &amp; compliance</td><td>$7,500</td></tr>
+            <tr><td>Operating cushion (6 mo.)</td><td>$18,000</td></tr>
+            <tr class="figures-total"><th scope="row">Total to launch</th><td><strong>$72,000</strong></td></tr>
+          </tbody>
+        </table>
+        <p class="body-text" style="margin-top: 1.25rem">
+          <strong>Fundraising target:</strong> ~<strong>$80k</strong> (friends &amp; family + small grant).
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner">
+        <p class="slide-kicker">Unit economics</p>
+        <h2>Projected cost per unit</h2>
+        <p class="body-text">
+          Blended <strong>COGS per puck</strong> (materials + direct labor + machine time allocated + packaging), at steady-state monthly volume <strong>~8,000 units</strong>:
+        </p>
+        <div class="stat-row">
+          <div class="stat"><b>$1.42</b><span>Fully loaded COGS / puck</span></div>
+          <div class="stat"><b>$0.58</b><span>Recycled rPET + additives</span></div>
+          <div class="stat"><b>$0.21</b><span>Stick fiber (procurement + grind)</span></div>
+        </div>
+        <p class="body-text" style="margin-top: 1rem; font-size: 0.98rem; color: var(--muted)">
+          Includes amortized mold cost <strong>$0.09</strong>, direct labor <strong>$0.18</strong>, packaging <strong>$0.14</strong>, overhead allocation <strong>$0.22</strong> (utilities, QC sampling). Single-SKU simplification for the model.
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner slide-inner--dense">
+        <p class="slide-kicker">Pricing &amp; volume</p>
+        <h2>Retail price &amp; sales plan</h2>
+        <p class="body-text">
+          <strong>MSRP:</strong> single puck <strong>$6.49</strong>; 3-pack <strong>$16.99</strong> (~<strong>$5.66</strong> per puck); team 24-pack <strong>$118</strong> (~<strong>$4.92</strong> per puck). Blended ASP after discounts modeled at <strong>$5.55</strong>.
+        </p>
+        <table class="figures">
+          <thead>
+            <tr><th>Period (steady ramp)</th><th>Units / day</th><th>Units / week</th><th>Units / month</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Months 1–2 (avg)</td><td>95</td><td>665</td><td>2,850</td></tr>
+            <tr><td>Months 3–6 (avg)</td><td>168</td><td>1,175</td><td>5,040</td></tr>
+            <tr><td>Month 12 target</td><td>285</td><td>1,995</td><td>8,550</td></tr>
+          </tbody>
+        </table>
+        <p class="disclaimer">Assumes 7-day ops for production planning; retail sell-through may be lumpier than manufacturing.</p>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner slide-inner--dense">
+        <p class="slide-kicker">Revenue</p>
+        <h2>Projected monthly revenue (gross)</h2>
+        <table class="figures">
+          <thead>
+            <tr><th>Milestone month</th><th>Approx. units sold</th><th>Gross revenue (blended ASP $5.55)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Month 3</td><td>4,600</td><td><strong>$25,530</strong></td></tr>
+            <tr><td>Month 6</td><td>6,800</td><td><strong>$37,740</strong></td></tr>
+            <tr><td>Month 9</td><td>7,900</td><td><strong>$43,845</strong></td></tr>
+            <tr><td>Month 12</td><td>8,550</td><td><strong>$47,453</strong></td></tr>
+          </tbody>
+        </table>
+        <p class="body-text" style="margin-top: 0.85rem">
+          Year-one sum of modeled months lands near <strong>$410k</strong> gross revenue (not compounded growth curve — stair-stepped by channel rollout).
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner slide-inner--dense">
+        <p class="slide-kicker">Marketing</p>
+        <h2>Awareness &amp; budget</h2>
+        <ul class="plain">
+          <li><strong>Content:</strong> short-form video (concrete glide tests vs. commodity puck, “stick-to-puck” batch stories).</li>
+          <li><strong>Paid social:</strong> Meta + TikTok geo clusters around Tier-B/C hockey markets first.</li>
+          <li><strong>Sponsorships:</strong> 2–3 local youth league logo packages with product drops.</li>
+          <li><strong>PR:</strong> one sustainability press push tied to first 10-ton of sticks diverted (milestone).</li>
+        </ul>
+        <table class="figures">
+          <thead>
+            <tr><th>Quarter</th><th>Monthly marketing spend (avg)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Q1 (launch)</td><td><strong>$4,200</strong></td></tr>
+            <tr><td>Q2–Q3</td><td><strong>$3,100</strong></td></tr>
+            <tr><td>Q4 (holiday + indoor street)</td><td><strong>$5,800</strong></td></tr>
+          </tbody>
+        </table>
+        <p class="body-text" style="margin-top: 0.75rem; font-size: 0.95rem; color: var(--muted)">
+          Includes creator fees, boosted posts, print flyers for rink partners, and tournament booth fees — <strong>not</strong> founder’s salary.
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner slide-inner--dense">
+        <p class="slide-kicker">Team</p>
+        <h2>Headcount &amp; labor cost</h2>
+        <div class="grid-2">
+          <div class="panel">
+            <h3>Roles at launch (mo. 1–6)</h3>
+            <ul class="plain">
+              <li><strong>Founder / CEO</strong> — ops, finance, fundraising (partial draw).</li>
+              <li><strong>Production lead</strong> — molding, maintenance, QC checks.</li>
+              <li><strong>Part-time partnerships</strong> — rinks, recycling partners (~20 hr/wk).</li>
+              <li><strong>Contract bookkeeper + fractional safety advisor</strong>.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>Projected labor (fully loaded)</h3>
+            <p><strong>Months 1–3:</strong> ~<strong>$2,800 / mo</strong> (founder deferred draw, part-time prep + contract molder).</p>
+            <p style="margin-top: 0.5rem"><strong>Months 6–12:</strong> ramp to ~<strong>$5,200 / mo</strong> (fits <strong>$18k</strong> operating cushion over six months).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true" data-slide-id="profitability">
+      <div class="slide-inner">
+        <p class="slide-kicker">Profitability</p>
+        <h2>Projected margins</h2>
+        <p class="body-text margin-period-label"><strong>Month 6</strong></p>
+        <div class="stat-row">
+          <div class="stat"><b>$17,734</b><span>Monthly profit</span></div>
+          <div class="stat"><b>47%</b><span>Net margin</span></div>
+        </div>
+        <p class="body-text margin-period-label"><strong>Month 12</strong></p>
+        <div class="stat-row">
+          <div class="stat"><b>$21,262</b><span>Monthly profit</span></div>
+          <div class="stat"><b>45%</b><span>Net margin</span></div>
+        </div>
+        <p class="body-text" style="margin-top: 1.25rem; font-size: 0.95rem; color: var(--muted)">(generous numbers)</p>
+      </div>
+    </section>
+
+    <section class="slide" aria-hidden="true">
+      <div class="slide-inner">
+        <h2>Our goal</h2>
+        <div class="goal-box">
+          <p>
+            Turn the <strong>high-cost waste</strong> of broken hockey sticks into <strong>affordable street hockey pucks</strong> — so families save money, less composite hits the trash, and kids keep playing.
+          </p>
+        </div>
+        <p class="tagline" style="margin-top: 1.5rem">Repuck Hockey — repurpose. replay. repeat.</p>
+      </div>
+    </section>
+  </div>
+
+  <nav class="controls" aria-label="Slide navigation">
+    <div class="arrows">
+      <button type="button" id="prev" aria-label="Previous slide">‹</button>
+    </div>
+    <div class="dots" id="dots" role="tablist" aria-label="Slides"></div>
+    <div class="arrows">
+      <button type="button" id="next" aria-label="Next slide">›</button>
+    </div>
+  </nav>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const dotsContainer = document.getElementById("dots");
+      const prevBtn = document.getElementById("prev");
+      const nextBtn = document.getElementById("next");
+      const editToolbar = document.getElementById("edit-toolbar");
+      const navHint = document.getElementById("nav-hint");
+      let index = 0;
+      let editMode = false;
+
+      const slideInners = Array.from(document.querySelectorAll(".slide-inner"));
+      const DECK_REVISION = 3;
+      const STORAGE_KEYS = [
+        "repuck-hockey-presentation-edits-v3",
+        "repuck-hockey-presentation-edits-v2",
+        "repuck-hockey-presentation-edits-v1",
+      ];
+      const EDITS_FILE = "presentation-edits.json";
+      const IDB_NAME = "repuck-presentation-db";
+      const IDB_STORE = "handles";
+      const HANDLE_KEY = "edits-json";
+      let editsFileHandle = null;
+      let autoSaveTimer = null;
+
+      function buildPayload() {
+        return {
+          v: 2,
+          deckRevision: DECK_REVISION,
+          savedAt: Date.now(),
+          slides: slideInners.map((el) => el.innerHTML),
+        };
+      }
+
+      function isStalePayload(parsed) {
+        if (!parsed) return true;
+        const rev = parsed.deckRevision;
+        if (rev == null) return true;
+        return rev < DECK_REVISION;
+      }
+
+      function applyPayload(parsed) {
+        const saved = parsed && parsed.slides;
+        if (!Array.isArray(saved) || saved.length === 0) return false;
+        const n = Math.min(saved.length, slideInners.length);
+        let applied = false;
+        for (let i = 0; i < n; i++) {
+          if (typeof saved[i] === "string" && saved[i].length > 0) {
+            slideInners[i].innerHTML = saved[i];
+            applied = true;
+          }
+        }
+        return applied;
+      }
+
+      function readLocalPayload() {
+        for (let k = 0; k < STORAGE_KEYS.length; k++) {
+          try {
+            const raw = localStorage.getItem(STORAGE_KEYS[k]);
+            if (!raw) continue;
+            const parsed = JSON.parse(raw);
+            if (isStalePayload(parsed)) continue;
+            if (parsed && Array.isArray(parsed.slides) && parsed.slides.length > 0) return parsed;
+          } catch (_) {}
+        }
+        return null;
+      }
+
+      function writeLocalPayload(payload) {
+        const json = JSON.stringify(payload);
+        for (let k = 0; k < STORAGE_KEYS.length; k++) {
+          localStorage.setItem(STORAGE_KEYS[k], json);
+        }
+      }
+
+      function openIdb() {
+        return new Promise(function (resolve, reject) {
+          const req = indexedDB.open(IDB_NAME, 1);
+          req.onupgradeneeded = function () {
+            req.result.createObjectStore(IDB_STORE);
+          };
+          req.onsuccess = function () {
+            resolve(req.result);
+          };
+          req.onerror = function () {
+            reject(req.error);
+          };
+        });
+      }
+
+      function idbGetHandle() {
+        return openIdb().then(function (db) {
+          return new Promise(function (resolve, reject) {
+            const tx = db.transaction(IDB_STORE, "readonly");
+            const req = tx.objectStore(IDB_STORE).get(HANDLE_KEY);
+            req.onsuccess = function () {
+              resolve(req.result || null);
+            };
+            req.onerror = function () {
+              reject(req.error);
+            };
+          });
+        });
+      }
+
+      function idbSetHandle(handle) {
+        return openIdb().then(function (db) {
+          return new Promise(function (resolve, reject) {
+            const tx = db.transaction(IDB_STORE, "readwrite");
+            tx.objectStore(IDB_STORE).put(handle, HANDLE_KEY);
+            tx.oncomplete = function () {
+              resolve();
+            };
+            tx.onerror = function () {
+              reject(tx.error);
+            };
+          });
+        });
+      }
+
+      function verifyFilePermission(handle, write) {
+        if (!handle || !handle.queryPermission) return Promise.resolve(false);
+        const opts = { mode: write ? "readwrite" : "readonly" };
+        return handle.queryPermission(opts).then(function (state) {
+          if (state === "granted") return true;
+          if (!handle.requestPermission) return false;
+          return handle.requestPermission(opts).then(function (s) {
+            return s === "granted";
+          });
+        });
+      }
+
+      function readPayloadFromHandle(handle) {
+        if (!handle || !handle.getFile) return Promise.resolve(null);
+        return verifyFilePermission(handle, false).then(function (ok) {
+          if (!ok) return null;
+          return handle.getFile().then(function (file) {
+            return file.text();
+          }).then(function (text) {
+            return JSON.parse(text);
+          }).catch(function () {
+            return null;
+          });
+        });
+      }
+
+      function writePayloadToHandle(handle, payload) {
+        if (!handle || !handle.createWritable) return Promise.resolve(false);
+        return verifyFilePermission(handle, true).then(function (ok) {
+          if (!ok) return false;
+          return handle.createWritable().then(function (w) {
+            return w.write(JSON.stringify(payload, null, 2)).then(function () {
+              return w.close();
+            }).then(function () {
+              return true;
+            });
+          }).catch(function () {
+            return false;
+          });
+        });
+      }
+
+      function fetchEditsFilePayload() {
+        return fetch(EDITS_FILE + "?t=" + Date.now(), { cache: "no-store" })
+          .then(function (res) {
+            if (!res.ok) return null;
+            return res.json();
+          })
+          .catch(function () {
+            return null;
+          });
+      }
+
+      function pickNewestPayload(candidates) {
+        let best = null;
+        let bestTime = 0;
+        candidates.forEach(function (p) {
+          if (isStalePayload(p)) return;
+          if (!p || !Array.isArray(p.slides) || p.slides.length === 0) return;
+          const t = p.savedAt || 0;
+          if (t >= bestTime) {
+            bestTime = t;
+            best = p;
+          }
+        });
+        return best;
+      }
+
+      function loadAllEdits() {
+        return Promise.all([
+          fetchEditsFilePayload(),
+          Promise.resolve(readLocalPayload()),
+          idbGetHandle()
+            .then(function (h) {
+              editsFileHandle = h;
+              return readPayloadFromHandle(h);
+            })
+            .catch(function () {
+              return null;
+            }),
+        ])
+          .then(function (results) {
+            const payload = pickNewestPayload(results);
+            if (payload) applyPayload(payload);
+          })
+          .catch(function () {});
+      }
+
+      function linkEditsFile() {
+        if (!window.showOpenFilePicker) {
+          alert("Your browser cannot link a file. Use Save, then put presentation-edits.json in this folder.");
+          return Promise.resolve(false);
+        }
+        return window.showOpenFilePicker({
+          types: [{ description: "JSON", accept: { "application/json": [".json"] } }],
+          multiple: false,
+        }).then(function (handles) {
+          editsFileHandle = handles[0];
+          return idbSetHandle(editsFileHandle);
+        }).then(function () {
+          return saveEditsToBrowser({ silent: true });
+        }).then(function () {
+          alert("Linked! Your edits will save to that file and reload on Live Server.");
+          return true;
+        }).catch(function () {
+          return false;
+        });
+      }
+
+      function saveEditsToBrowser(opts) {
+        opts = opts || {};
+        const btn = document.getElementById("edit-save");
+        const prevLabel = btn ? btn.textContent : "";
+        const payload = buildPayload();
+
+        try {
+          writeLocalPayload(payload);
+        } catch (_) {
+          if (!opts.silent) alert("Could not save (storage may be full or disabled).");
+          return Promise.resolve(false);
+        }
+
+        function doneUi(wroteFile) {
+          if (btn && !opts.silent) {
+            btn.textContent = wroteFile ? "Saved!" : "Saved (browser)";
+            setTimeout(function () {
+              btn.textContent = prevLabel;
+            }, 1600);
+          }
+        }
+
+        return writePayloadToHandle(editsFileHandle, payload).then(function (wrote) {
+          if (wrote) {
+            doneUi(true);
+            return true;
+          }
+          return idbGetHandle().then(function (h) {
+            if (!h) return false;
+            editsFileHandle = h;
+            return writePayloadToHandle(h, payload);
+          }).then(function (wrote2) {
+            if (wrote2) {
+              doneUi(true);
+              return true;
+            }
+            if (!opts.silent && window.showSaveFilePicker) {
+              return window.showSaveFilePicker({
+                suggestedName: EDITS_FILE,
+                types: [{ description: "JSON", accept: { "application/json": [".json"] } }],
+              }).then(function (handle) {
+                editsFileHandle = handle;
+                return idbSetHandle(handle).then(function () {
+                  return writePayloadToHandle(handle, payload);
+                });
+              }).then(function (wrote3) {
+                doneUi(!!wrote3);
+                return !!wrote3;
+              }).catch(function () {
+                doneUi(false);
+                return false;
+              });
+            }
+            doneUi(false);
+            return false;
+          });
+        });
+      }
+
+      function scheduleAutoSave() {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(function () {
+          saveEditsToBrowser({ silent: true });
+        }, 800);
+      }
+
+      slideInners.forEach(function (inner) {
+        inner.addEventListener("input", function () {
+          if (editMode) scheduleAutoSave();
+        });
+      });
+
+      window.addEventListener("beforeunload", function () {
+        try {
+          writeLocalPayload(buildPayload());
+        } catch (_) {}
+      });
+
+      function isTypingInSlide(el) {
+        if (!el || !el.nodeType) return false;
+        const t = el.nodeType === 3 ? el.parentElement : el;
+        return !!(t && t.closest && t.closest(".slide-inner[contenteditable='true']"));
+      }
+
+      function setEditMode(on) {
+        editMode = !!on;
+        document.body.classList.toggle("edit-mode", editMode);
+        editToolbar.hidden = !editMode;
+        slideInners.forEach((inner) => {
+          inner.setAttribute("contenteditable", editMode ? "true" : "false");
+          inner.querySelectorAll(".logo-mark").forEach((mark) => {
+            mark.setAttribute("contenteditable", "false");
+          });
+        });
+        try {
+          const u = new URL(window.location.href);
+          if (editMode) u.searchParams.set("edit", "1");
+          else u.searchParams.delete("edit");
+          history.replaceState(null, "", u.pathname + u.search + u.hash);
+        } catch (_) {}
+        if (navHint) {
+          navHint.textContent = editMode
+            ? "Edit mode: click text to type · Esc exits · dots/arrows still change slides"
+            : "← → or Space to advance · Edit slides button or ⌘/Ctrl+⇧+E";
+        }
+      }
+
+      function toggleEditMode() {
+        setEditMode(!editMode);
+      }
+
+      function downloadFullHtml() {
+        const doctype = "<!DOCTYPE html>\n";
+        const blob = new Blob([doctype + document.documentElement.outerHTML], {
+          type: "text/html;charset=utf-8",
+        });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "presentation-edited.html";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text);
+        }
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand("copy");
+        } finally {
+          document.body.removeChild(ta);
+        }
+        return Promise.resolve();
+      }
+
+      document.getElementById("edit-enter").addEventListener("click", () => setEditMode(true));
+      document.getElementById("edit-exit").addEventListener("click", () => setEditMode(false));
+      document.getElementById("edit-save").addEventListener("click", function () {
+        saveEditsToBrowser();
+      });
+      document.getElementById("edit-link-file").addEventListener("click", linkEditsFile);
+      document.getElementById("edit-download").addEventListener("click", downloadFullHtml);
+      document.getElementById("edit-copy-slide").addEventListener("click", () => {
+        const inner = slides[index].querySelector(".slide-inner");
+        if (inner) copyText(inner.outerHTML);
+      });
+      document.getElementById("edit-toggle-url").addEventListener("click", () => {
+        try {
+          const u = new URL(window.location.href);
+          u.searchParams.set("edit", "1");
+          copyText(u.toString());
+        } catch (_) {}
+      });
+
+      slides.forEach((_, i) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.setAttribute("role", "tab");
+        b.setAttribute("aria-label", "Go to slide " + (i + 1));
+        b.addEventListener("click", () => go(i));
+        dotsContainer.appendChild(b);
+      });
+
+      const dotButtons = Array.from(dotsContainer.querySelectorAll("button"));
+
+      function updateDots() {
+        dotButtons.forEach((d, i) => {
+          d.setAttribute("aria-current", i === index ? "true" : "false");
+        });
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index === slides.length - 1;
+      }
+
+      function go(i) {
+        index = Math.max(0, Math.min(slides.length - 1, i));
+        slides.forEach((s, j) => {
+          const on = j === index;
+          s.classList.toggle("active", on);
+          s.setAttribute("aria-hidden", on ? "false" : "true");
+        });
+        updateDots();
+      }
+
+      function next() {
+        if (index < slides.length - 1) go(index + 1);
+      }
+
+      function prev() {
+        if (index > 0) go(index - 1);
+      }
+
+      prevBtn.addEventListener("click", prev);
+      nextBtn.addEventListener("click", next);
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && editMode) {
+          e.preventDefault();
+          setEditMode(false);
+          return;
+        }
+        const mod = e.metaKey || e.ctrlKey;
+        if (mod && e.shiftKey && (e.key === "e" || e.key === "E")) {
+          e.preventDefault();
+          toggleEditMode();
+          return;
+        }
+        if (editMode && mod && (e.key === "s" || e.key === "S")) {
+          e.preventDefault();
+          saveEditsToBrowser();
+          return;
+        }
+        if (e.key === " " && e.target && e.target.id === "edit-enter") return;
+        if (isTypingInSlide(e.target)) {
+          if (e.key === " " && e.target.closest(".slide-inner[contenteditable='true']")) {
+            e.stopPropagation();
+          }
+          return;
+        }
+        if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") {
+          e.preventDefault();
+          next();
+        } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+          e.preventDefault();
+          prev();
+        } else if (e.key === "Home") {
+          e.preventDefault();
+          go(0);
+        } else if (e.key === "End") {
+          e.preventDefault();
+          go(slides.length - 1);
+        }
+      });
+
+      loadAllEdits()
+        .then(function () {
+          try {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get("edit") === "1" || params.get("edit") === "true") {
+              setEditMode(true);
+            }
+          } catch (_) {}
+          go(0);
+        })
+        .catch(function () {
+          go(0);
+        });
+    })();
+  </script>
+</body>
+</html>
