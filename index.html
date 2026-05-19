@@ -591,6 +591,27 @@
       display: none;
     }
 
+    .share-version-btn {
+      left: auto;
+      right: 1.25rem;
+      border-color: rgba(196, 30, 58, 0.55);
+      color: var(--accent-soft);
+    }
+
+    .share-version-btn:hover {
+      background: rgba(196, 30, 58, 0.2);
+      border-color: var(--accent-soft);
+      color: #fff;
+    }
+
+    @media (max-width: 520px) {
+      .share-version-btn {
+        right: 0.75rem;
+        font-size: 0.75rem;
+        padding: 0.4rem 0.65rem;
+      }
+    }
+
     @media (max-width: 520px) {
       .edit-enter-btn {
         font-size: 0.75rem;
@@ -614,6 +635,7 @@
   </div>
 
   <button type="button" class="edit-enter-btn" id="edit-enter" aria-label="Enter slide edit mode">Edit slides</button>
+  <button type="button" class="edit-enter-btn share-version-btn" id="share-my-version" aria-label="Publish your exact slides to the share link">Share my version</button>
 
   <p class="hint" id="nav-hint">← → or Space to advance · <kbd style="opacity:0.85;font-size:0.75em">⌘/Ctrl</kbd>+<kbd style="opacity:0.85;font-size:0.75em">⇧</kbd>+<kbd style="opacity:0.85;font-size:0.75em">E</kbd> edit</p>
 
@@ -998,6 +1020,7 @@
         "repuck-hockey-presentation-edits-v1",
       ];
       const EDITS_FILE = "presentation-edits.json";
+      const SHARE_URL = "https://wnorton26-sketch.github.io/repuck-hockey-presentation/";
       const IDB_NAME = "repuck-presentation-db";
       const IDB_STORE = "handles";
       const HANDLE_KEY = "edits-json";
@@ -1274,6 +1297,66 @@
         }, 800);
       }
 
+      function downloadJsonFile(filename, data) {
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json;charset=utf-8" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+
+      function publishForShare() {
+        const payload = buildPayload();
+        const btn = document.getElementById("share-my-version");
+        const prevLabel = btn ? btn.textContent : "";
+        if (btn) btn.textContent = "Preparing…";
+
+        function finish(message) {
+          if (btn) {
+            btn.textContent = prevLabel;
+          }
+          alert(message);
+        }
+
+        writeLocalPayload(payload);
+        downloadJsonFile(EDITS_FILE, payload);
+
+        return writePayloadToHandle(editsFileHandle, payload)
+          .then(function (wrote) {
+            if (!wrote) {
+              return idbGetHandle().then(function (h) {
+                if (!h) return false;
+                editsFileHandle = h;
+                return writePayloadToHandle(h, payload);
+              });
+            }
+            return wrote;
+          })
+          .then(function () {
+            return copyText(SHARE_URL);
+          })
+          .then(function () {
+            finish(
+              "Your exact slides are in the downloaded presentation-edits.json.\n\n" +
+                "1) Put that file in your project folder (same folder as index.html) and replace the old one.\n\n" +
+                "2) In Terminal, run:\n   bash publish.sh\n\n" +
+                "3) Wait ~1 minute, then send this link (copied to clipboard):\n   " +
+                SHARE_URL +
+                "\n\nAnyone who opens it will see the same slides you see now."
+            );
+          })
+          .catch(function () {
+            finish(
+              "Downloaded presentation-edits.json with your slides.\n\n" +
+                "1) Put it in your project folder (replace the old file).\n\n" +
+                "2) Run: bash publish.sh\n\n" +
+                "3) Share:\n   " +
+                SHARE_URL
+            );
+          });
+      }
+
       slideInners.forEach(function (inner) {
         inner.addEventListener("input", function () {
           if (editMode) scheduleAutoSave();
@@ -1350,6 +1433,7 @@
       }
 
       document.getElementById("edit-enter").addEventListener("click", () => setEditMode(true));
+      document.getElementById("share-my-version").addEventListener("click", publishForShare);
       document.getElementById("edit-exit").addEventListener("click", () => setEditMode(false));
       document.getElementById("edit-save").addEventListener("click", function () {
         saveEditsToBrowser();
